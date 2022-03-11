@@ -76,9 +76,7 @@ class dielectric : public material {
 public:
 	dielectric(double index_of_refraction) : ir(index_of_refraction) {}
 
-	virtual bool scatter(
-		const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered
-	) const override {
+	virtual bool scatter(const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered) const override {
 		//没有衰减，不吸收任何光线
 		attenuation = color(1.0, 1.0, 1.0);
 		//判断交点是在外部还是内部 front_face为true时-->外部
