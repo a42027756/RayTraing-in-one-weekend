@@ -1,4 +1,5 @@
 #pragma once
+#pragma comment(linker, "/STACK:102400000,102400000")
 #ifndef  MATERIAL_H
 #define  MATERIAL_H
 
@@ -76,6 +77,20 @@ class dielectric : public material {
 public:
 	dielectric(double index_of_refraction) : ir(index_of_refraction) {}
 
+	//inline bool refract(const ray& r_in, const vec3& n, double eta, ray& refracted) const
+	//{
+	//	vec3 unit_direction = unit_vector(r_in.direction());    //将入射光线单位化
+
+	//	double cos1 = dot(unit_direction, n);
+	//	double cos2 = 1. - eta * eta * (1. - cos1 * cos1);
+	//	if (cos2 > 0)
+	//	{
+	//		refracted.direction() = eta * unit_direction + n * (eta * cos1 - sqrt(cos2));
+	//		return true;
+	//	}
+	//	return false;
+	//}
+
 	virtual bool scatter(const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered) const override {
 		//没有衰减，不吸收任何光线
 		attenuation = color(1.0, 1.0, 1.0);
@@ -117,6 +132,58 @@ private:
 	}
 };
 
-
+//class dielectric :public material
+//{
+//public:
+//	dielectric(const rtvar RI) :_RI(RI) {  }
+//
+//	virtual bool scatter(const ray& InRay, const hitInfo& info, rtvec& attenuation, ray& scattered)const override;
+//
+//	inline bool refract(const rtvec& rIn, const rtvec& n, rtvar eta, rtvec& refracted)const
+//	{
+//		rtvec unitIn = rIn.ret_unitization();    //将入射光线单位化
+//
+//		rtvar cos1 = dot(unitIn, n);
+//		rtvar cos2 = 1. - eta * eta * (1. - cos1 * cos1);
+//		if (cos2 > 0)
+//		{
+//			refracted = eta * (rIn - n * cos1) - n * sqrt(cos2);
+//			return true;
+//		}
+//		return false;
+//	}
+//private:
+//	rtvar _RI;
+//};
+//
+//bool dielectric::scatter(const ray& InRay, const hitInfo& info, rtvec& attenuation, ray& scattered)const
+//{
+//	rtvec outward_normal;
+//	rtvec reflected = metal::reflect(InRay.direction(), info._n);
+//	rtvar eta;
+//	attenuation = rtvec(1., 1., 1.);
+//	rtvec refracted;
+//
+//	if (dot(InRay.direction(), info._n) > 0)
+//	{
+//		outward_normal = -info._n;
+//		eta = _RI;
+//	}
+//	else
+//	{
+//		outward_normal = info._n;
+//		eta = 1. / _RI;
+//	}
+//	if (refract(InRay.direction(), outward_normal, eta, refracted))
+//	{
+//		scattered = ray(info._p, refracted);
+//	}
+//	else
+//	{
+//		scattered = ray(info._p, reflected);
+//		return false;
+//	}
+//	return true;
+//};
 
 #endif // ! MATERIAL_H
